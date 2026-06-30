@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoData</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>GeoData</h1>
+
+        <!-- Display trigger messages -->
+        <div id="trigger-messages" class="trigger-messages">
+            {% for trigger_message in trigger_logs %}
+                <div class="trigger-message">{{ trigger_message }}</div>
+            {% endfor %}
+        </div>
+
+        <!-- Logout button -->
+        <form action="/logout" method="POST" class="logout-form">
+            <button type="submit" class="btn-logout">Logout</button>
+        </form>
+
+        <!-- Form for adding a location -->
+        <div class="card">
+            <div class="card-header">
+                Add Location
+            </div>
+            <div class="card-body">
+                <form action="/add_location" method="POST">
+                    <input type="text" name="name" placeholder="Name" required>
+                    <input type="text" name="latitude" placeholder="Latitude" required>
+                    <input type="text" name="longitude" placeholder="Longitude" required>
+                    <input type="text" name="country" placeholder="Country" required>
+                    <input type="text" name="region" placeholder="Region" required>
+                    <input type="text" name="continent" placeholder="Continent" required>
+                    <button type="submit">Add Location</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- List of locations -->
+        <div class="card-grid">
+            {% for location in locations %}
+                <div class="card">
+                    <div class="card-header">
+                        {{ location.Name }}
+                    </div>
+                    <div class="card-body">
+                        <p>Country: {{ location.Country }}</p>
+                        <p>Region: {{ location.Region }}</p>
+                        <p>Continent: {{ location.Continent }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <form action="/delete_location/{{ location.LocationID }}" method="POST">
+                            <button type="submit" class="btn-danger">Delete</button>
+                        </form>
+                        <a href="/edit_location/{{ location.LocationID }}" class="btn-edit">Edit</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        // Function to show trigger messages
+        function showTriggerMessage() {
+            var triggerMessage = document.getElementById('trigger-messages');
+            triggerMessage.style.display = 'block'; // Show the messages
+
+            // After 5 seconds, hide the messages
+            setTimeout(function() {
+                triggerMessage.style.display = 'none'; // Hide the messages
+            }, 5000);
+        }
+
+        // Call the function to show trigger messages
+        showTriggerMessage();
+    </script>
+</body>
+</html>

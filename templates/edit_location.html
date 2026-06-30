@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Location</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #D1E8E2;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #116466 ;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #116466; /* Зеленый цвет */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button[type="submit"]:hover {
+            background-color: #005a4b; /* Темнозеленый при наведении */
+        }
+        .section {
+            margin-top: 20px;
+            border-top: 1px solid #ccc;
+            padding-top: 20px;
+        }
+        /* Добавляем стиль для слов Climate Data, Natural Features Data и Population Data */
+        .data-heading {
+            color: #116466; /* Зеленый цвет */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Location</h1>
+        <form action="/edit_location/{{ location.LocationID }}" method="POST">
+            <input type="text" name="name" placeholder="Name" value="{{ location.Name }}" required>
+            <input type="text" name="latitude" placeholder="Latitude" value="{{ location.Latitude }}" required>
+            <input type="text" name="longitude" placeholder="Longitude" value="{{ location.Longitude }}" required>
+            <input type="text" name="country" placeholder="Country" value="{{ location.Country }}" required>
+            <input type="text" name="region" placeholder="Region" value="{{ location.Region }}" required>
+            <input type="text" name="continent" placeholder="Continent" value="{{ location.Continent }}" required>
+
+            <!-- Climate Data -->
+            <h2 class="data-heading">Climate Data</h2>
+            {% if climate_data %}
+                {% for climate in climate_data %}
+                    <input type="text" name="temperature" placeholder="Temperature" value="{{ climate.Temperature }}">
+                    <input type="text" name="precipitation" placeholder="Precipitation" value="{{ climate.Precipitation }}">
+                    <input type="text" name="humidity" placeholder="Humidity" value="{{ climate.Humidity }}">
+                {% endfor %}
+            {% else %}
+                <input type="text" name="temperature" placeholder="Temperature">
+                <input type="text" name="precipitation" placeholder="Precipitation">
+                <input type="text" name="humidity" placeholder="Humidity">
+            {% endif %}
+
+            <!-- Natural Features Data -->
+            <h2 class="data-heading">Natural Features Data</h2>
+            {% if natural_features_data %}
+                {% for feature in natural_features_data %}
+                    <input type="text" name="feature_type" placeholder="Feature Type" value="{{ feature.FeatureType }}">
+                    <input type="text" name="feature_name" placeholder="Feature Name" value="{{ feature.Name }}">
+                    <input type="text" name="feature_description" placeholder="Feature Description" value="{{ feature.Description }}">
+                {% endfor %}
+            {% else %}
+                <input type="text" name="feature_type" placeholder="Feature Type">
+                <input type="text" name="feature_name" placeholder="Feature Name">
+                <input type="text" name="feature_description" placeholder="Feature Description">
+            {% endif %}
+
+            <!-- Population Data -->
+            <h2 class="data-heading">Population Data</h2>
+            {% if population_data %}
+                {% for population in population_data %}
+                    <input type="text" name="population_count" placeholder="Population Count" value="{{ population.PopulationCount }}">
+                    <input type="text" name="urban_population" placeholder="Urban Population" value="{{ population.UrbanPopulation }}">
+                    <input type="text" name="rural_population" placeholder="Rural Population" value="{{ population.RuralPopulation }}">
+                {% endfor %}
+            {% else %}
+                <input type="text" name="population_count" placeholder="Population Count">
+                <input type="text" name="urban_population" placeholder="Urban Population">
+                <input type="text" name="rural_population" placeholder="Rural Population">
+            {% endif %}
+
+
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+</body>
+</html>
